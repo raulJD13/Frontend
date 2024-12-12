@@ -1,0 +1,29 @@
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Nombre</ion-label>
+    <ion-input [(ngModel)]="deporte.nombre"></ion-input>
+  </ion-item>
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
+  <ion-item>
+    <ion-label>Tipo</ion-label>
+    <ion-select [(ngModel)]="deporte.tipo">
+      <ion-select-option value="tierra">Tierra</ion-select-option>
+      <ion-select-option value="agua">Agua</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Imagen</ion-label>
+    <input type="file" (change)="onFileSelected($event)" />
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Vista Previa</ion-label>
+    <img *ngIf="deporte.imagen" [src]="deporte.imagen" alt="Imagen del deporte" />
+  </ion-item>
+
+  <ion-button expand="full" color="primary" (click)="saveDeporte()">
+    Guardar
+  </ion-button>
+</ion-content>

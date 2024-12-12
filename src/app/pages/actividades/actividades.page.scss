@@ -1,0 +1,32 @@
+ion-item {
+  --inner-padding-start: 0;
+  --inner-padding-end: 0;
+  color: #ffffff; /* Establecer el color de texto para los elementos de ion-item */
+}
+
+ion-thumbnail img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+ion-label {
+  color: #ffffff;
+
+  h2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #F0F8FF;
+  }
+
+  p {
+    font-size: 14px;
+    color: #D3D3D3;
+    margin: 2px 0;
+  }
+
+  p strong {
+    color: #ffffff;
+  }
+}

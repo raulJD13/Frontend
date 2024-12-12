@@ -1,0 +1,7 @@
+{
+  "name": "sports-crud2.0",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
