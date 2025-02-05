@@ -10,7 +10,7 @@ import { DeporteService } from 'src/app/services/deporte.service';
 export class DeportePage implements OnInit {
   deporte: any = { nombre: '', tipo: 'tierra', imagen: '' };
   isEdit = false;
-  errorMessage = ''; 
+  errorMessage = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -19,10 +19,10 @@ export class DeportePage implements OnInit {
   ) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id'); 
+    const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEdit = true;
-      this.deporteService.getDeporteById(+id).subscribe(data => {
+      this.deporteService.getDeporteById(+id).subscribe((data) => {
         this.deporte = data;
       });
     }
@@ -33,13 +33,15 @@ export class DeportePage implements OnInit {
       this.errorMessage = 'El nombre del deporte no puede estar vacío';
       return;
     }
-    
+
     this.errorMessage = '';
 
     if (this.isEdit) {
-      this.deporteService.updateDeporte(this.deporte.idDeporte, this.deporte).subscribe(() => {
-        this.router.navigate(['/deportes']);
-      });
+      this.deporteService
+        .updateDeporte(this.deporte.idDeporte, this.deporte)
+        .subscribe(() => {
+          this.router.navigate(['/deportes']);
+        });
     } else {
       this.deporteService.createDeporte(this.deporte).subscribe(() => {
         this.router.navigate(['/deportes']);

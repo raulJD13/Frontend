@@ -3,11 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ActividadService {
   // URL de la API backend para obtener actividades
-  private apiUrl = 'http://localhost:8083/api/actividades'; // Asegúrate de que esta URL es correcta
+  private apiUrl = 'http://localhost:8080/api/actividades'; // Asegúrate de que esta URL es correcta
 
   constructor(private http: HttpClient) {}
 
