@@ -7,7 +7,7 @@ import { ActividadesPage } from './pages/actividades/actividades.page';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/deportes',  
+    redirectTo: '/landing',  
     pathMatch: 'full',
   },
   {
@@ -25,7 +25,29 @@ const routes: Routes = [
   {
     path: 'actividades/:id',
     loadChildren: () => import('./pages/actividades/actividades.module').then(m => m.ActividadesPageModule)
+  },
+  {
+    path: 'actividad',
+    loadChildren: () => import('./pages/actividad/actividad.module').then( m => m.ActividadPageModule)
+  },
+  {
+    path: 'usuario',
+    loadChildren: () => import('./pages/usuario/usuario.module').then( m => m.UsuarioPageModule)
+  },
+  {
+    path: 'landing',
+    loadChildren: () => import('./pages/landing/landing.module').then( m => m.LandingPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
   }
+
+
 ];
 
 
