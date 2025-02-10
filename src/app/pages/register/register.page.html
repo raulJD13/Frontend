@@ -16,6 +16,23 @@
       <ion-input type="password" [(ngModel)]="password"></ion-input>
     </ion-item>
 
-    <ion-button expand="block" shape="round" (click)="registrarse()">Registrarse</ion-button>
+    <ion-item lines="none">
+      <ion-label position="floating">Localización</ion-label>
+      <ion-input type="text" [(ngModel)]="localizacion"></ion-input>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label position="floating">Foto de Perfil (URL)</ion-label>
+      <ion-input type="text" [(ngModel)]="fotoPerfil"></ion-input>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label position="floating">Foto de Fondo Perfil (URL)</ion-label>
+      <ion-input type="text" [(ngModel)]="fotoFondoPerfil"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" shape="round" (click)="register()"
+      >Registrarse</ion-button
+    >
   </div>
 </ion-content>
