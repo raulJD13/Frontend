@@ -1,32 +1,51 @@
 ion-item {
   --inner-padding-start: 0;
   --inner-padding-end: 0;
-  color: #ffffff; /* Establecer el color de texto para los elementos de ion-item */
+  color: #ffffff;
 }
 
 ion-thumbnail img {
-  width: 80px;
-  height: 80px;
+  width: 100%;
+  height: auto;
+  max-width: 80px;
+  max-height: 80px;
   object-fit: cover;
   border-radius: 8px;
 }
 
 ion-label {
+  flex: 1;
   color: #ffffff;
+}
 
-  h2 {
-    font-size: 18px;
-    font-weight: bold;
-    color: #F0F8FF;
-  }
+ion-label h2 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #f0f8ff;
+}
 
-  p {
-    font-size: 14px;
-    color: #D3D3D3;
-    margin: 2px 0;
-  }
+ion-label p {
+  font-size: 14px;
+  color: #d3d3d3;
+  margin: 2px 0;
+}
 
-  p strong {
-    color: #ffffff;
+ion-label p strong {
+  color: #ffffff;
+}
+
+/* Diseño adaptable para móviles */
+.botones-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+/* En pantallas grandes, los botones deben estar en línea */
+@media (min-width: 768px) {
+  .botones-container {
+    flex-direction: row;
+    justify-content: flex-end;
   }
 }

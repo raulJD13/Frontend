@@ -1,13 +1,79 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>actividad</ion-title>
+    <ion-title
+      >{{ isEditing ? 'Editar Actividad' : 'Nueva Actividad' }}</ion-title
+    >
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">actividad</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <form (ngSubmit)="saveActividad()">
+    <!-- Nombre de la Actividad -->
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input
+        [(ngModel)]="actividad.nombre"
+        name="nombre"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <!-- Descripción -->
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-textarea
+        [(ngModel)]="actividad.descripcion"
+        name="descripcion"
+      ></ion-textarea>
+    </ion-item>
+
+    <!-- Precio -->
+    <ion-item>
+      <ion-label position="floating">Precio</ion-label>
+      <ion-input
+        [(ngModel)]="actividad.precio"
+        name="precio"
+        type="number"
+        min="0"
+      ></ion-input>
+    </ion-item>
+
+    <!-- Valoración -->
+    <ion-item>
+      <ion-label>Valoración</ion-label>
+      <ion-select [(ngModel)]="actividad.valoracion" name="valoracion">
+        <ion-select-option *ngFor="let val of [1, 2, 3, 4, 5]" [value]="val">
+          {{ val }} / 5
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Imagen -->
+    <ion-item>
+      <ion-label>Imagen</ion-label>
+      <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+    </ion-item>
+
+    <!-- Vista previa de imagen -->
+    <ion-item *ngIf="actividad.imagen">
+      <ion-label>Vista Previa</ion-label>
+      <img
+        [src]="actividad.imagen"
+        alt="Imagen de la actividad"
+        class="preview-img"
+      />
+    </ion-item>
+
+    <!-- Mensajes de error -->
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
+    <!-- Botones -->
+    <ion-button expand="full" color="primary" type="submit">
+      {{ isEditing ? 'Actualizar' : 'Guardar' }}
+    </ion-button>
+
+    <ion-button expand="full" color="medium" (click)="cancel()">
+      Cancelar
+    </ion-button>
+  </form>
 </ion-content>

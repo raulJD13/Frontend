@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { ActividadService } from 'src/app/services/actividad.service';
 
 @Component({
@@ -14,7 +15,9 @@ export class ActividadesPage implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private actividadService: ActividadService
+    private actividadService: ActividadService,
+    private alertController: AlertController,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -49,19 +52,58 @@ export class ActividadesPage implements OnInit {
     }
   }
 
-  deleteActividad(id: number) {
-    if (this.token) {
-      this.actividadService.deleteActividad(id).subscribe(
-        () => {
-          this.cargarActividades();
+  async eliminarActividad(idActividad: number) {
+    const alert = await this.alertController.create({
+      header: 'Eliminar Actividad',
+      message: '¿Estás seguro de que deseas eliminar esta actividad?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
         },
-        (error) => {
-          console.error('Error al eliminar la actividad:', error);
-          alert('Hubo un problema al eliminar la actividad.');
-        }
-      );
-    } else {
-      alert('Token no disponible. Debes iniciar sesión.');
-    }
+        {
+          text: 'Eliminar',
+          handler: () => {
+            if (!this.token) {
+              console.error('Token no disponible. Debes iniciar sesión.');
+              console.error('Token no disponible. Debes iniciar sesión.');
+              return;
+            }
+
+            this.actividadService.deleteActividad(idActividad).subscribe(
+              () => {
+                console.log(`Actividad ${idActividad} eliminada correctamente`);
+                this.cargarActividades(); // Recargar la lista después de eliminar
+              },
+              (error) => {
+                console.error('Error al eliminar la actividad:', error);
+
+                if (error.status === 403) {
+                  console.error(
+                    'No tienes permisos para eliminar esta actividad.'
+                  );
+                } else if (error.status === 401) {
+                  console.error(
+                    'Tu sesión ha expirado. Por favor, inicia sesión nuevamente.'
+                  );
+                } else {
+                  console.error('Hubo un problema al eliminar la actividad.');
+                }
+              }
+            );
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  irAComentarios(idActividad: number) {
+    this.router.navigate([`/comentarios/${idActividad}`]);
+  }
+
+  irAEditar(idActividad: number) {
+    this.router.navigate(['/actividad', idActividad]);
   }
 }

@@ -1,13 +1,57 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>comentarios</ion-title>
+    <ion-title>Comentarios</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">comentarios</ion-title>
+      <ion-title size="large">Comentarios</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-list *ngIf="comentarios.length > 0; else noData">
+    <ion-item *ngFor="let comentario of comentarios">
+      <ion-label>
+        <h2>{{ comentario.usuario?.nombre || 'Anónimo' }}</h2>
+        <p>{{ comentario.texto }}</p>
+        <small>{{ comentario.fecha | date:'short' }}</small>
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button (click)="editarComentario(comentario)" color="warning">
+          <ion-icon name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="eliminarComentario(comentario.id)" color="danger">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noData>
+    <ion-item>
+      <ion-label>No hay comentarios disponibles.</ion-label>
+    </ion-item>
+  </ng-template>
+
+  <!-- Agregar un nuevo comentario -->
+  <ion-item>
+    <ion-input
+      [(ngModel)]="nuevoComentario"
+      placeholder="Escribe un comentario..."
+    ></ion-input>
+    <ion-button (click)="agregarComentario()" color="primary"
+      >Enviar</ion-button
+    >
+  </ion-item>
+
+  <!-- Editar comentario -->
+  <ion-item *ngIf="editandoComentario">
+    <ion-input [(ngModel)]="editandoComentario.texto"></ion-input>
+    <ion-button (click)="guardarEdicion()" color="success">Guardar</ion-button>
+    <ion-button (click)="editandoComentario = null" color="medium"
+      >Cancelar</ion-button
+    >
+  </ion-item>
 </ion-content>
