@@ -18,6 +18,7 @@
         <p>{{ comentario.texto }}</p>
         <small>{{ comentario.fecha | date:'short' }}</small>
       </ion-label>
+      <!-- editar un nuevo comentario y eliminarlo
       <ion-buttons slot="end">
         <ion-button (click)="editarComentario(comentario)" color="warning">
           <ion-icon name="create-outline"></ion-icon>
@@ -26,6 +27,7 @@
           <ion-icon name="trash-outline"></ion-icon>
         </ion-button>
       </ion-buttons>
+       -->
     </ion-item>
   </ion-list>
 
@@ -35,7 +37,7 @@
     </ion-item>
   </ng-template>
 
-  <!-- Agregar un nuevo comentario -->
+  <!-- Agregar un nuevo comentario 
   <ion-item>
     <ion-input
       [(ngModel)]="nuevoComentario"
@@ -45,8 +47,8 @@
       >Enviar</ion-button
     >
   </ion-item>
-
-  <!-- Editar comentario -->
+-->
+  <!-- Editar comentario 
   <ion-item *ngIf="editandoComentario">
     <ion-input [(ngModel)]="editandoComentario.texto"></ion-input>
     <ion-button (click)="guardarEdicion()" color="success">Guardar</ion-button>
@@ -54,4 +56,5 @@
       >Cancelar</ion-button
     >
   </ion-item>
+-->
 </ion-content>
