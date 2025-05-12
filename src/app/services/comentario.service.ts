@@ -7,7 +7,7 @@ import { LoginService } from './login.service'; // Asegúrate de que este servic
   providedIn: 'root',
 })
 export class ComentarioService {
-  private apiUrl = 'http://localhost:8080/api/comentarios'; // Asegúrate de usar la URL correcta del backend
+  private apiUrl = 'http://localhost:8083/api/comentarios'; // Asegúrate de usar la URL correcta del backend
 
   constructor(private http: HttpClient, private loginService: LoginService) {}
 

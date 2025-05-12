@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class LoginService {
-  private apiUrl = 'http://localhost:8080/api/usuarios/login'; // URL del backend (ajusta según corresponda)
-  private registerUrl = 'http://localhost:8080/api/usuarios'; // URL para registro
+  private apiUrl = 'http://localhost:8083/api/usuarios/login'; // URL del backend (ajusta según corresponda)
+  private registerUrl = 'http://localhost:8083/api/usuarios'; // URL para registro
   private tokenKey = 'auth_token'; // Nombre del token en localStorage
 
   constructor(private http: HttpClient) {}

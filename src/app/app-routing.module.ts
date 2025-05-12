@@ -5,6 +5,7 @@ import { DeportePage } from './pages/deporte/deporte.page';
 import { ActividadesPage } from './pages/actividades/actividades.page';
 import { HttpClientModule } from '@angular/common/http';
 
+
 const routes: Routes = [
   {
     path: '',
@@ -77,7 +78,11 @@ const routes: Routes = [
       import('./pages/comentarios/comentarios.module').then(
         (m) => m.ComentariosPageModule
       ),
+  },  {
+    path: 'server-down',
+    loadChildren: () => import('./pages/server-down/server-down.module').then( m => m.ServerDownPageModule)
   },
+
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes), HttpClientModule],

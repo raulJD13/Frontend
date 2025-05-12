@@ -7,7 +7,7 @@ import { LoginService } from './login.service';
   providedIn: 'root',
 })
 export class ActividadService {
-  private apiUrl = 'http://localhost:8080/api/actividades';
+  private apiUrl = 'http://localhost:8083/api/actividades';
 
   constructor(private http: HttpClient, private loginService: LoginService) {}
 
