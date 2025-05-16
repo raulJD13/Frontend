@@ -7,7 +7,7 @@ import { LoginService } from './login.service'; // Asegúrate de que LoginServic
   providedIn: 'root',
 })
 export class DeporteService {
-  private apiUrl = 'http://localhost:8083/api/deportes'; // URL del backend
+  private apiUrl = 'http://localhost:8080/api/deportes'; // URL del backend
 
   constructor(private http: HttpClient, private loginService: LoginService) {}
 

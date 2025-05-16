@@ -7,7 +7,7 @@ import { LoginService } from './login.service'; // Asegúrate de que este servic
   providedIn: 'root',
 })
 export class ComentarioService {
-  private apiUrl = 'http://localhost:8083/api/comentarios'; // Asegúrate de usar la URL correcta del backend
+  private apiUrl = 'http://localhost:8080/api/comentarios'; // Asegúrate de usar la URL correcta del backend
 
   constructor(private http: HttpClient, private loginService: LoginService) {}
 
@@ -62,6 +62,12 @@ export class ComentarioService {
   deleteComentario(id: number): Observable<any> {
     console.log('Enviando solicitud para eliminar comentario con ID:', id); // Verificamos si el id es correcto
     return this.http.delete<any>(`${this.apiUrl}/${id}`, {
+      headers: this.getHeaders(),
+    });
+  }
+  // Obtener comentarios por actividad
+  getComentariosByActividad(idActividad: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/actividad/${idActividad}`, {
       headers: this.getHeaders(),
     });
   }

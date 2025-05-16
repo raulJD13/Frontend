@@ -20,7 +20,11 @@
 
   <ion-item>
     <ion-label>Vista Previa</ion-label>
-    <img *ngIf="deporte.imagen" [src]="deporte.imagen" alt="Imagen del deporte" />
+    <img
+      *ngIf="deporte.imagen"
+      [src]="deporte.imagen"
+      alt="Imagen del deporte"
+    />
   </ion-item>
 
   <ion-button expand="full" color="primary" (click)="saveDeporte()">

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ComentarioService } from 'src/app/services/comentario.service';
 import { LoginService } from 'src/app/services/login.service';
 
@@ -11,68 +12,70 @@ export class ComentariosPage implements OnInit {
   comentarios: any[] = [];
   nuevoComentario: string = '';
   editandoComentario: any = null;
-  errorMessage: string = '';
-  idUsuario: number | null = null; // ID del usuario autenticado
+  idUsuario: number | null = null;
+  idActividad: number | null = null;
 
   constructor(
     private comentarioService: ComentarioService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.loadComentarios();
-    this.idUsuario = this.obtenerIdUsuario(); // Obtener ID del usuario autenticado
-    if (!this.idUsuario) {
-      console.error('El usuario no está autenticado o no tiene un ID válido.');
+    const actividadIdFromRoute =
+      this.route.snapshot.paramMap.get('idActividad');
+    console.log('ID Actividad desde ruta:', actividadIdFromRoute);
+
+    if (actividadIdFromRoute) {
+      this.idActividad = Number(actividadIdFromRoute);
+      this.loadComentarios();
     }
+
+    this.idUsuario = this.obtenerIdUsuario();
+    console.log('ID Usuario:', this.idUsuario);
   }
 
-  // Obtener ID del usuario autenticado
-  obtenerIdUsuario(): number | null {
-    const token = this.loginService.getToken();
-    if (token) {
-      const payload = JSON.parse(atob(token.split('.')[1])); // Decodificar token JWT
-      return payload.idUsuario; // Ajusta el nombre del campo según tu backend
-    }
-    return null;
-  }
-
-  // Cargar todos los comentarios
   loadComentarios() {
-    this.comentarioService.getComentarios().subscribe(
-      (data) => {
-        this.comentarios = data;
-        // Verificar si algún comentario tiene el ID como undefined
-        this.comentarios.forEach((comentario) => {
-          if (!comentario.id) {
-            console.error('Comentario sin ID:', comentario);
+    if (this.idActividad) {
+      this.comentarioService
+        .getComentariosByActividad(this.idActividad)
+        .subscribe(
+          (data) => {
+            console.log('Comentarios cargados:', data);
+            this.comentarios = data;
+          },
+          (error) => {
+            console.error('Error al cargar comentarios:', error);
           }
-        });
-      },
-      (error) => {
-        console.error('Error al cargar los comentarios:', error);
-        this.errorMessage = 'No se pudieron cargar los comentarios.';
-      }
-    );
+        );
+    }
   }
 
-  // Crear un nuevo comentario
+  obtenerIdUsuario(): number | null {
+    const id = localStorage.getItem('idUsuario');
+    return id ? Number(id) : null;
+  }
+
   agregarComentario() {
-    if (!this.nuevoComentario.trim() || !this.idUsuario) {
-      console.error(
-        'No se puede agregar un comentario sin texto o sin ID de usuario.'
-      );
+    if (!this.nuevoComentario.trim() || !this.idUsuario || !this.idActividad) {
+      console.error('Faltan datos para agregar comentario.');
+      console.log('nuevoComentario:', this.nuevoComentario);
+      console.log('idUsuario:', this.idUsuario);
+      console.log('idActividad:', this.idActividad);
       return;
     }
 
-    const comentario = { texto: this.nuevoComentario };
+    const comentario = {
+      texto: this.nuevoComentario,
+      actividad: { idActividad: this.idActividad },
+    };
 
     this.comentarioService
       .createComentario(comentario, this.idUsuario)
       .subscribe(
         (data) => {
           this.comentarios.push(data);
-          this.nuevoComentario = ''; // Limpiar campo
+          this.nuevoComentario = '';
         },
         (error) => {
           console.error('Error al crear el comentario:', error);
@@ -80,68 +83,49 @@ export class ComentariosPage implements OnInit {
       );
   }
 
-  // Activar edición de un comentario
   editarComentario(comentario: any) {
-    if (!comentario.id) {
-      console.error('Comentario no tiene ID para editar.');
-      return;
-    }
     this.editandoComentario = { ...comentario };
   }
 
-  // Guardar cambios de un comentario editado
   guardarEdicion() {
-    if (
-      !this.editandoComentario ||
-      !this.editandoComentario.id ||
-      !this.editandoComentario.texto.trim()
-    ) {
-      console.error('El comentario o el ID es inválido');
-      return;
-    }
+    if (this.editandoComentario && this.editandoComentario.texto.trim()) {
+      this.editandoComentario.idActividad = this.idActividad;
 
-    this.comentarioService
-      .updateComentario(this.editandoComentario.id, this.editandoComentario)
-      .subscribe(
-        () => {
-          const index = this.comentarios.findIndex(
-            (c) => c.id === this.editandoComentario.id
-          );
-          if (index !== -1) {
-            this.comentarios[index] = this.editandoComentario;
+      this.comentarioService
+        .updateComentario(
+          this.editandoComentario.idComentario,
+          this.editandoComentario
+        )
+        .subscribe(
+          () => {
+            const index = this.comentarios.findIndex(
+              (c) => c.idComentario === this.editandoComentario.idComentario
+            );
+            if (index !== -1) {
+              this.comentarios[index] = { ...this.editandoComentario };
+            }
+            this.editandoComentario = null;
+          },
+          (error) => {
+            console.error('Error al actualizar comentario:', error);
           }
-          this.editandoComentario = null;
-        },
-        (error) => {
-          console.error('Error al actualizar el comentario:', error);
-        }
-      );
+        );
+    }
   }
 
-  eliminarComentario(id: number) {
-    if (!id) {
-      console.error('El ID del comentario es inválido');
-      return;
-    }
+  cancelarEdicion() {
+    this.editandoComentario = null;
+  }
 
-    console.log('Eliminando comentario con ID:', id); // Verificamos que el ID es correcto
-
-    // Verificar si el id es válido antes de enviar la solicitud
-    if (!id || id === null || id === undefined) {
-      console.error('El ID del comentario es nulo o indefinido');
-      return;
-    }
-
-    // Llamada al servicio para eliminar el comentario
-    this.comentarioService.deleteComentario(id).subscribe(
-      (response) => {
-        console.log('Comentario eliminado con éxito:', response); // Si la llamada tiene éxito
-        // Filtrar el comentario de la lista después de la eliminación
-        this.comentarios = this.comentarios.filter((c) => c.id !== id);
+  eliminarComentario(idComentario: number) {
+    this.comentarioService.deleteComentario(idComentario).subscribe(
+      () => {
+        this.comentarios = this.comentarios.filter(
+          (c) => c.idComentario !== idComentario
+        );
       },
       (error) => {
-        console.error('Error al eliminar el comentario:', error);
-        this.errorMessage = 'No se pudo eliminar el comentario.';
+        console.error('Error al eliminar comentario:', error);
       }
     );
   }
