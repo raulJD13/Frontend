@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Equipamiento Actividad {{ actividadId }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Lista actual -->
+  <ion-list>
+    <ion-item *ngFor="let item of lista">
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+          <ion-col size="4">
+            <ion-input
+              [(ngModel)]="item.equipamiento.nombre"
+              placeholder="Nombre"
+            ></ion-input>
+          </ion-col>
+          <ion-col size="3">
+            <ion-input
+              [(ngModel)]="item.equipamiento.tipo"
+              placeholder="Tipo"
+            ></ion-input>
+          </ion-col>
+          <ion-col size="3">
+            <ion-input
+              [(ngModel)]="item.equipamiento.descripcion"
+              placeholder="Descripción"
+            ></ion-input>
+          </ion-col>
+          <ion-col size="2" class="ion-text-right">
+            <ion-button (click)="editarEquip(item)">
+              <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+            </ion-button>
+            <ion-button color="danger" (click)="eliminar(item)">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+
+  <!-- Formulario de nuevo equipamiento -->
+  <ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="4">
+          <ion-input [(ngModel)]="nuevoNombre" placeholder="Nombre"></ion-input>
+        </ion-col>
+        <ion-col size="3">
+          <ion-input [(ngModel)]="nuevoTipo" placeholder="Tipo"></ion-input>
+        </ion-col>
+        <ion-col size="3">
+          <ion-input
+            [(ngModel)]="nuevaDesc"
+            placeholder="Descripción"
+          ></ion-input>
+        </ion-col>
+        <ion-col size="2" class="ion-text-right">
+          <ion-button (click)="agregar()">
+            <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+</ion-content>
