@@ -13,21 +13,38 @@
 
   <ion-list *ngIf="comentarios.length > 0; else noData">
     <ion-item *ngFor="let comentario of comentarios">
-      <ion-label>
-        <h2>{{ comentario.usuario?.nombre || 'Anónimo' }}</h2>
-        <p>{{ comentario.texto }}</p>
-        <small>{{ comentario.fecha | date:'short' }}</small>
-      </ion-label>
-      <!-- editar un nuevo comentario y eliminarlo
-      <ion-buttons slot="end">
-        <ion-button (click)="editarComentario(comentario)" color="warning">
-          <ion-icon name="create-outline"></ion-icon>
-        </ion-button>
-        <ion-button (click)="eliminarComentario(comentario.id)" color="danger">
-          <ion-icon name="trash-outline"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-       -->
+      <div
+        *ngIf="!editandoComentario || editandoComentario.idComentario !== comentario.idComentario"
+      >
+        <ion-label>
+          <h2>{{ comentario.usuario?.email || 'Anónimo' }}</h2>
+          <p>{{ comentario.texto }}</p>
+          <small>{{ comentario.fecha | date: 'short' }}</small>
+        </ion-label>
+        <ion-buttons slot="end">
+          <ion-button (click)="editarComentario(comentario)" color="warning">
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
+          <ion-button
+            (click)="eliminarComentario(comentario.idComentario)"
+            color="danger"
+          >
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </div>
+
+      <div
+        *ngIf="editandoComentario && editandoComentario.idComentario === comentario.idComentario"
+      >
+        <ion-input [(ngModel)]="editandoComentario.texto"></ion-input>
+        <ion-button (click)="guardarEdicion()" color="success"
+          >Guardar</ion-button
+        >
+        <ion-button (click)="cancelarEdicion()" color="medium"
+          >Cancelar</ion-button
+        >
+      </div>
     </ion-item>
   </ion-list>
 
@@ -37,7 +54,6 @@
     </ion-item>
   </ng-template>
 
-  <!-- Agregar un nuevo comentario 
   <ion-item>
     <ion-input
       [(ngModel)]="nuevoComentario"
@@ -47,14 +63,4 @@
       >Enviar</ion-button
     >
   </ion-item>
--->
-  <!-- Editar comentario 
-  <ion-item *ngIf="editandoComentario">
-    <ion-input [(ngModel)]="editandoComentario.texto"></ion-input>
-    <ion-button (click)="guardarEdicion()" color="success">Guardar</ion-button>
-    <ion-button (click)="editandoComentario = null" color="medium"
-      >Cancelar</ion-button
-    >
-  </ion-item>
--->
 </ion-content>

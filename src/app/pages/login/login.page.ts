@@ -11,7 +11,10 @@ export class LoginPage {
   email: string = '';
   password: string = '';
 
-  constructor(private router: Router, private loginService: LoginService) {}
+  constructor(
+    private router: Router,
+    private loginService: LoginService
+  ) {}
 
   continuar() {
     if (!this.email || !this.password) {
@@ -19,21 +22,22 @@ export class LoginPage {
       return;
     }
 
-    // Llamada al servicio de login
     this.loginService.login(this.email, this.password).subscribe(
       (response) => {
-        console.log('Respuesta del servidor:', response); // Depuración
+        console.log('Respuesta del servidor:', response);
 
-        // Verificamos si el servidor respondió con el token
-        if (response && response.token) {
-          // Guardamos el token
-          this.loginService.saveToken(response.token);
-          console.log('Token guardado correctamente:', response.token);
+        const token     = response.token;
+        const idUsuario = response.idUsuario;
 
-          // Redirigir a la página principal o de deportes
+        if (token && idUsuario != null) {
+          // Guardamos token e ID de usuario en localStorage
+          this.loginService.saveToken(token);
+          localStorage.setItem('idUsuario', idUsuario.toString());
+
+          // Redirigimos a la página de deportes
           this.router.navigate(['/deportes']);
         } else {
-          alert('Error: No se recibió un token válido.');
+          alert('Error: No se recibió token o idUsuario en la respuesta.');
         }
       },
       (error) => {

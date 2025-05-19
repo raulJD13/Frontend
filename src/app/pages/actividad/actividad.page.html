@@ -48,23 +48,23 @@
       </ion-select>
     </ion-item>
 
-    <!-- Imagen 
+    <!--  imagen  -->
+
     <ion-item>
       <ion-label>Imagen</ion-label>
       <input type="file" (change)="onFileSelected($event)" accept="image/*" />
     </ion-item>
--->
-    <!-- Vista previa de imagen 
+
+    <!-- Vista previa de imagen  -->
+
     <ion-item *ngIf="actividad.imagen">
       <ion-label>Vista Previa</ion-label>
       <img
         [src]="actividad.imagen"
         alt="Imagen de la actividad"
         class="preview-img"
-      
       />
     </ion-item>
- -->
     <!-- Mensajes de error -->
     <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
 

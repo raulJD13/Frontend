@@ -49,6 +49,14 @@
             </ion-button>
             <ion-button
               fill="clear"
+              color="tertiary"
+              [routerLink]="['/equipamientos', actividad.idActividad]"
+            >
+              <ion-icon name="eye-outline"></ion-icon> Ver Equipamiento
+              Necesario
+            </ion-button>
+            <ion-button
+              fill="clear"
               color="warning"
               [routerLink]="['/actividad', actividad.idActividad]"
             >

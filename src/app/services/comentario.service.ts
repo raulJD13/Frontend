@@ -65,4 +65,10 @@ export class ComentarioService {
       headers: this.getHeaders(),
     });
   }
+  // Obtener comentarios por actividad
+  getComentariosByActividad(idActividad: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/actividad/${idActividad}`, {
+      headers: this.getHeaders(),
+    });
+  }
 }

@@ -4,14 +4,15 @@ import { AlertController } from '@ionic/angular';
 import { ActividadService } from 'src/app/services/actividad.service';
 
 @Component({
-  selector: 'app-actividades',
-  templateUrl: './actividades.page.html',
-  styleUrls: ['./actividades.page.scss'],
+  selector: 'app-actividades', // Selector correcto para actividades
+  templateUrl: './actividades.page.html', // Template correcto
+  styleUrls: ['./actividades.page.scss'], // Estilos correctos
 })
 export class ActividadesPage implements OnInit {
+  // Clase exportada correctamente
   actividades: any[] = [];
   deporteId: number | null = null;
-  token: string | null = null; // Guardamos el token
+  token: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -21,7 +22,7 @@ export class ActividadesPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.token = localStorage.getItem('auth_token'); // Obtener el token del localStorage
+    this.token = localStorage.getItem('auth_token');
 
     if (!this.token) {
       console.error('No se encontró el token en el localStorage');
@@ -31,7 +32,7 @@ export class ActividadesPage implements OnInit {
 
     const deporteId = this.route.snapshot.paramMap.get('id');
     if (deporteId) {
-      this.deporteId = +deporteId; // Convertir a número
+      this.deporteId = +deporteId;
       this.cargarActividades();
     } else {
       console.error('ID de deporte no encontrado');
@@ -57,15 +58,11 @@ export class ActividadesPage implements OnInit {
       header: 'Eliminar Actividad',
       message: '¿Estás seguro de que deseas eliminar esta actividad?',
       buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
+        { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Eliminar',
           handler: () => {
             if (!this.token) {
-              console.error('Token no disponible. Debes iniciar sesión.');
               console.error('Token no disponible. Debes iniciar sesión.');
               return;
             }
@@ -73,11 +70,10 @@ export class ActividadesPage implements OnInit {
             this.actividadService.deleteActividad(idActividad).subscribe(
               () => {
                 console.log(`Actividad ${idActividad} eliminada correctamente`);
-                this.cargarActividades(); // Recargar la lista después de eliminar
+                this.cargarActividades();
               },
               (error) => {
                 console.error('Error al eliminar la actividad:', error);
-
                 if (error.status === 403) {
                   console.error(
                     'No tienes permisos para eliminar esta actividad.'
