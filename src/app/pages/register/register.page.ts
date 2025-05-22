@@ -22,7 +22,11 @@ export class RegisterPage {
       return;
     }
 
+    // Extraer username desde el email (antes del @)
+    const username = this.email.split('@')[0];
+
     const usuario = {
+      username: username,
       email: this.email,
       contraseña: this.password,
       localizacion: this.localizacion,
@@ -36,7 +40,7 @@ export class RegisterPage {
 
         if (response && response.token) {
           this.loginService.saveToken(response.token);
-          this.router.navigate(['/deportes']); // Redirigir después del registro
+          this.router.navigate(['/deportes']); // Redirigir tras el registro
         } else {
           alert('Error al registrar el usuario.');
         }

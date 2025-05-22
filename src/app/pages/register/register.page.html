@@ -1,19 +1,21 @@
 <ion-content [fullscreen]="true" class="register-container">
   <div class="register-box animated-entry">
     <h1 class="app-title">Crear Cuenta</h1>
-    
+
     <ion-item class="register-input">
       <ion-icon slot="start" name="mail-outline" class="input-icon"></ion-icon>
-      <ion-label position="floating">Email</ion-label>
+      <ion-label class="register-place" position="floating">Email</ion-label>
       <ion-input type="email" [(ngModel)]="email" class="input-field"></ion-input>
     </ion-item>
 
     <ion-item class="register-input">
       <ion-icon slot="start" name="lock-closed-outline" class="input-icon"></ion-icon>
-      <ion-label position="floating">Contraseña</ion-label>
+      <ion-label class="register-place" position="floating">Contraseña</ion-label>
       <ion-input type="password" [(ngModel)]="password" class="input-field"></ion-input>
     </ion-item>
 
+    <!-- Opcionales -->
+    <!-- 
     <ion-item class="register-input">
       <ion-icon slot="start" name="location-outline" class="input-icon"></ion-icon>
       <ion-label position="floating">Localización</ion-label>
@@ -31,6 +33,7 @@
       <ion-label position="floating">Foto de Fondo (URL)</ion-label>
       <ion-input type="text" [(ngModel)]="fotoFondoPerfil" class="input-field"></ion-input>
     </ion-item>
+    -->
 
     <ion-button expand="block" (click)="register()" class="register-button">
       Registrarse
