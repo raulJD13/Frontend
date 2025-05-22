@@ -9,21 +9,25 @@ import { LoadingController } from '@ionic/angular';
 export class LandingPage implements OnInit {
 
   isLoading = true;
+  showIcons = false;
 
-  constructor(private loadingCtrl: LoadingController) { }
+  constructor(private loadingCtrl: LoadingController) {}
 
   async ngOnInit() {
-    // mostramos loading nativo (opcional)
     const loading = await this.loadingCtrl.create({
       spinner: 'crescent',
       backdropDismiss: false,
     });
     await loading.present();
 
-    // simulamos carga de 2 s
     setTimeout(async () => {
-      this.isLoading = false;     // quita el overlay-spinner y muestra botones
-      await loading.dismiss();    // cierra el LoadingController
+      this.isLoading = false;
+      await loading.dismiss();
+
+      // Mostrar íconos 1 segundo después de quitar el loading
+      setTimeout(() => {
+        this.showIcons = true;
+      }, 1000);
     }, 2000);
   }
 }

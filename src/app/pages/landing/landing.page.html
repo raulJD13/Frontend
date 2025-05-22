@@ -5,6 +5,17 @@
     <ion-spinner name="crescent"></ion-spinner>
   </div>
 
+  <!-- Icono de información en esquina superior izquierda -->
+  <div *ngIf="showIcons" class="info-icon fade-in">
+    <a
+      href="../../../assets/html/Manual%20de%20Usuario%20TerraSplash.html"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img src="../../../assets/icon/icon-informacion.svg" alt="Información" />
+    </a>
+  </div>
+
   <!-- Contenedor principal centrado -->
   <div class="landing-wrap">
 
@@ -27,6 +38,6 @@
         </ion-button>
       </div>
     </div>
-
   </div>
+
 </ion-content>

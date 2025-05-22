@@ -5,11 +5,45 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0,0,0,0.25);
+  background: rgba(0, 0, 0, 0.25);
   z-index: 10;
 }
 
-/* contenedor principal full‑screen */
+/* icono de información */
+.info-icon {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 30;
+  width: 40px;
+  height: 40px;
+}
+.info-icon img {
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.info-icon img:hover {
+  transform: scale(1.1);
+}
+
+/* animación de entrada */
+.fade-in {
+  animation: fadeIn 1s ease-in forwards;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* contenedor principal */
 .landing-wrap {
   position: relative;
   width: 100%;
@@ -30,7 +64,7 @@
   filter: blur(4px);
 }
 
-/* contenido con logo y botones */
+/* contenido centrado */
 .content {
   position: relative;
   z-index: 20;
@@ -41,24 +75,24 @@
   align-items: center;
 }
 
-/* logo más grande */
+/* logo */
 .logo {
-  width: 55%;         /* ahora ocupa 70% del ancho */
-  max-width: 400px;   /* hasta 400px */
+  width: 55%;
+  max-width: 400px;
   opacity: 0;
   transform: scale(0.8);
   transition: opacity 0.4s ease, transform 0.4s ease;
-  margin-top: 30vh;   /* empuja el logo hacia abajo un 15% de la altura */
+  margin-top: 30vh;
 }
 .logo.entered {
   opacity: 1;
   transform: scale(1);
 }
 
-/* botones más abajo */
+/* botones */
 .buttons {
   position: absolute;
-  bottom: 40px;       /* los sitúa a 40px del borde inferior */
+  bottom: 40px;
   width: 80%;
   max-width: 400px;
   display: flex;
