@@ -10,17 +10,17 @@ import { ActividadService } from 'src/app/services/actividad.service';
 })
 export class ActividadPage implements OnInit {
   actividad: any = {
-    id: null, // 🔹 Agregado para evitar undefined
     nombre: '',
     descripcion: '',
     precio: null,
     valoracion: null,
     imagen: '',
-    id_deporte: null, // Asegurar que se envíe al backend
+    deporte: { idDeporte: null }
   };
 
   errorMessage: string = '';
   isEditing: boolean = false;
+  actividadId: number | null = null;
 
   constructor(
     private actividadService: ActividadService,
@@ -30,84 +30,111 @@ export class ActividadPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Obtener id_deporte desde el state o la URL
-    const state = this.location.getState() as { deporteId?: number };
-    const deporteIdFromRoute = this.route.snapshot.paramMap.get('deporteId');
     const actividadId = this.route.snapshot.paramMap.get('id');
+    const state = this.location.getState() as { deporteId?: number };
 
-    if (state && state.deporteId) {
-      this.actividad.id_deporte = state.deporteId;
-    } else if (deporteIdFromRoute) {
-      this.actividad.id_deporte = Number(deporteIdFromRoute);
-    } else {
-      console.warn('No se encontró id_deporte.');
+    if (state?.deporteId) {
+      this.actividad.deporte.idDeporte = state.deporteId;
     }
 
-    if (actividadId) {
+    if (actividadId && actividadId !== 'new') {
       this.isEditing = true;
-      this.actividadService.getActividadById(Number(actividadId)).subscribe(
-        (data) => {
-          this.actividad = data;
-
-          // 🔹 Asegurar que el ID se establece correctamente
-          this.actividad.id = Number(actividadId);
-
-          console.log('Actividad cargada:', this.actividad);
-          if (!this.actividad.id_deporte) {
-            this.actividad.id_deporte =
-              this.actividad.deporte?.idDeporte || null;
-          }
-        },
-        (error) => {
-          console.error('Error al cargar la actividad:', error);
-        }
-      );
+      this.actividadId = +actividadId;
+      this.loadActividad(this.actividadId);
     }
+  }
+
+  private loadActividad(id: number) {
+    this.actividadService.getActividadById(id).subscribe(
+      (data) => {
+        this.actividad = data;
+        if (!this.actividad.deporte) {
+          this.actividad.deporte = { idDeporte: this.actividad.id_deporte };
+        }
+      },
+      (error) => {
+        console.error('Error al cargar la actividad:', error);
+      }
+    );
   }
 
   saveActividad() {
-    if (!this.actividad.nombre || !this.actividad.precio) {
-      this.errorMessage = 'Por favor, completa todos los campos obligatorios.';
+    if (!this.validateForm()) return;
+
+    if (this.isEditing && this.actividadId != null) {
+      this.updateActividad(this.actividadId);
+    } else {
+      this.createActividad();
+    }
+  }
+
+  private validateForm(): boolean {
+    this.errorMessage = '';
+
+    if (!this.actividad.nombre?.trim()) {
+      this.errorMessage = 'El nombre es obligatorio';
+      return false;
+    }
+
+    if (!this.actividad.precio || this.actividad.precio < 0) {
+      this.errorMessage = 'El precio debe ser un valor positivo';
+      return false;
+    }
+
+    return true;
+  }
+
+  private createActividad() {
+    if (!this.actividad.deporte.idDeporte) {
+      console.error('ID de deporte no definido');
       return;
     }
 
-    console.log('Guardando actividad:', this.actividad);
+    this.actividadService
+      .createActividad(this.actividad, this.actividad.deporte.idDeporte)
+      .subscribe({
+        next: () => this.navigateBack(),
+        error: (err) => this.handleError(err)
+      });
+  }
 
-    if (this.isEditing) {
-      if (!this.actividad.id) {
-        console.error('Error: ID de la actividad es undefined.');
-        return; // Evitar enviar una petición incorrecta
-      }
+  private updateActividad(id: number) {
+    this.actividadService.updateActividad(id, this.actividad)
+      .subscribe({
+        next: () => this.navigateBack(),
+        error: (err) => this.handleError(err)
+      });
+  }
 
-      this.actividadService
-        .updateActividad(this.actividad.id, this.actividad)
-        .subscribe(() => {
-          console.log('Actividad actualizada.');
-          this.router.navigate([`/actividades/${this.actividad.id_deporte}`]);
-        });
+  private navigateBack() {
+    if (this.actividad.deporte.idDeporte) {
+      this.router.navigate([`/actividades/${this.actividad.deporte.idDeporte}`]);
     } else {
-      this.actividadService
-        .createActividad(this.actividad, this.actividad.id_deporte as number)
-        .subscribe(() => {
-          console.log('Actividad creada.');
-          this.router.navigate([`/actividades/${this.actividad.id_deporte}`]);
-        });
+      this.router.navigate(['/deportes']);
     }
   }
 
-  cancel() {
-    console.log('Cancelando, volviendo a actividades.');
-    this.router.navigate([`/actividades/${this.actividad.id_deporte}`]);
+  private handleError(error: any) {
+    console.error('Error:', error);
+    this.errorMessage = error.error?.message || 'Error desconocido';
   }
 
   onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.actividad.imagen = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
+    const file: File = event.target.files[0];
+    if (!file) return;
+
+    this.actividadService.uploadImage(file).subscribe({
+      next: (response) => {
+        this.actividad.imagen = response.fileUrl;
+      },
+      error: (err) => {
+        console.error('Error al subir imagen:', err);
+        this.errorMessage = 'Error al subir la imagen';
+      }
+    });
+  }
+
+  cancel() {
+    this.navigateBack();
   }
 }

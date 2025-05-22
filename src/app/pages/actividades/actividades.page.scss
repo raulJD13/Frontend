@@ -1,51 +1,164 @@
-ion-item {
-  --inner-padding-start: 0;
-  --inner-padding-end: 0;
-  color: #ffffff;
+/* actividades.page.scss */
+ion-content {
+  --background: #f0f8ff;
+  padding: 16px;
 }
 
-ion-thumbnail img {
-  width: 100%;
-  height: auto;
-  max-width: 80px;
-  max-height: 80px;
-  object-fit: cover;
-  border-radius: 8px;
+ion-header {
+  ion-toolbar {
+    --background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    --color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  ion-button {
+    --background-hover: rgba(255, 255, 255, 0.1);
+    --ripple-color: white;
+    --border-radius: 8px;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+  }
+}
+
+ion-list {
+  background: transparent;
+}
+
+ion-item {
+  --background: white;
+  --border-radius: 12px;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  }
+}
+
+ion-thumbnail {
+  margin: 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+
+  img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
 }
 
 ion-label {
-  flex: 1;
-  color: #ffffff;
+  padding: 16px 0;
+
+  h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: #6c757d;
+    line-height: 1.4;
+    margin: 4px 0;
+
+    strong {
+      color: #4a90e2;
+      font-weight: 500;
+    }
+  }
 }
 
-ion-label h2 {
-  font-size: 18px;
-  font-weight: bold;
-  color: #f0f8ff;
-}
-
-ion-label p {
-  font-size: 14px;
-  color: #d3d3d3;
-  margin: 2px 0;
-}
-
-ion-label p strong {
-  color: #ffffff;
-}
-
-/* Diseño adaptable para móviles */
 .botones-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 5px;
+  gap: 8px;
+  padding: 16px;
+
+  ion-button {
+    --border-radius: 8px;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    margin: 0;
+    transition: all 0.3s ease;
+
+    ion-icon {
+      margin-right: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      ion-icon {
+        transform: translateX(3px);
+      }
+    }
+
+    &[color="secondary"] {
+      --background: #4a90e2;
+      --color: white;
+    }
+
+    &[color="tertiary"] {
+      --background: #6c757d;
+      --color: white;
+    }
+
+    &[color="warning"] {
+      --background: #ffc107;
+      --color: black;
+    }
+
+    &[color="danger"] {
+      --background: #dc3545;
+      --color: white;
+    }
+  }
 }
 
-/* En pantallas grandes, los botones deben estar en línea */
 @media (min-width: 768px) {
   .botones-container {
     flex-direction: row;
     justify-content: flex-end;
+    align-items: center;
+
+    ion-button {
+      --padding-start: 16px;
+      --padding-end: 16px;
+    }
+  }
+}
+
+/* Animaciones adicionales */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+ion-item {
+  animation: fadeIn 0.5s ease forwards;
+  opacity: 0;
+}
+
+@for $i from 1 through 10 {
+  ion-item:nth-child(#{$i}) {
+    animation-delay: $i * 0.1s;
   }
 }

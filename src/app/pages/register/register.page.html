@@ -1,38 +1,40 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Registro</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true" class="register-container">
-  <div class="register-box">
-    <ion-item lines="none">
+  <div class="register-box animated-entry">
+    <h1 class="app-title">Crear Cuenta</h1>
+    
+    <ion-item class="register-input">
+      <ion-icon slot="start" name="mail-outline" class="input-icon"></ion-icon>
       <ion-label position="floating">Email</ion-label>
-      <ion-input type="email" [(ngModel)]="email"></ion-input>
+      <ion-input type="email" [(ngModel)]="email" class="input-field"></ion-input>
     </ion-item>
 
-    <ion-item lines="none">
+    <ion-item class="register-input">
+      <ion-icon slot="start" name="lock-closed-outline" class="input-icon"></ion-icon>
       <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" [(ngModel)]="password"></ion-input>
+      <ion-input type="password" [(ngModel)]="password" class="input-field"></ion-input>
     </ion-item>
 
-    <ion-item lines="none">
+    <ion-item class="register-input">
+      <ion-icon slot="start" name="location-outline" class="input-icon"></ion-icon>
       <ion-label position="floating">Localización</ion-label>
-      <ion-input type="text" [(ngModel)]="localizacion"></ion-input>
+      <ion-input type="text" [(ngModel)]="localizacion" class="input-field"></ion-input>
     </ion-item>
 
-    <ion-item lines="none">
+    <ion-item class="register-input">
+      <ion-icon slot="start" name="camera-outline" class="input-icon"></ion-icon>
       <ion-label position="floating">Foto de Perfil (URL)</ion-label>
-      <ion-input type="text" [(ngModel)]="fotoPerfil"></ion-input>
+      <ion-input type="text" [(ngModel)]="fotoPerfil" class="input-field"></ion-input>
     </ion-item>
 
-    <ion-item lines="none">
-      <ion-label position="floating">Foto de Fondo Perfil (URL)</ion-label>
-      <ion-input type="text" [(ngModel)]="fotoFondoPerfil"></ion-input>
+    <ion-item class="register-input">
+      <ion-icon slot="start" name="image-outline" class="input-icon"></ion-icon>
+      <ion-label position="floating">Foto de Fondo (URL)</ion-label>
+      <ion-input type="text" [(ngModel)]="fotoFondoPerfil" class="input-field"></ion-input>
     </ion-item>
 
-    <ion-button expand="block" shape="round" (click)="register()"
-      >Registrarse</ion-button
-    >
+    <ion-button expand="block" (click)="register()" class="register-button">
+      Registrarse
+      <ion-icon slot="end" name="checkmark-outline" class="button-icon"></ion-icon>
+    </ion-button>
   </div>
 </ion-content>

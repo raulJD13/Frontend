@@ -1,78 +1,105 @@
-// Fondo y espaciado general para el ion-content
-.equipamiento-content {
-  background: linear-gradient(135deg, #edf2f7, #e2e8f0);
-  min-height: 100vh;
-  .equipamiento-list {
-    ion-item.equipamiento-item {
-      background-color: #ffffff;
-      border-radius: 8px;
-      margin: 10px 0;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      
-      ion-label {
-        flex: 1;
-        h2 {
-          font-size: 1.2em;
-          font-weight: bold;
-          color: #2d3748;
-        }
-        p {
-          font-size: 0.9em;
-          color: #4a5568;
-          margin: 4px 0;
-        }
-      }
-      
-      // Ajuste del input dentro de cada item
-      ion-input.input-cantidad {
-        width: 80px;
-        margin-right: 10px;
-      }
-      
-      // Botones de acción
-      ion-button {
-        margin-left: 8px;
-        &.btn-refresh {
-          --background: #3182ce;
-          --background-activated: #2c5282;
-        }
-        &.btn-delete {
-          --background: #e53e3e;
-          --background-activated: #c53030;
-        }
-      }
-    }
+/* Variables de colores personalizados (opcional) */
+$card-bg-color: #ffffff;
+$hover-shadow: rgba(0, 0, 0, 0.15);
+$primary-color: var(--ion-color-primary);
+$danger-color: var(--ion-color-danger);
+
+// .ion-padding{
+//   --background: #F0F8FF;
+
+// }
+
+/* Estilos generales para las tarjetas de equipamiento */
+.equip-card {
+  background: $card-bg-color;
+  margin: 1rem 0.5rem;
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  /* Animación al pasar el cursor */
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 10px $hover-shadow;
   }
-  
-  // Estilos para el formulario de nuevo equipamiento
-  ion-item.nuevo-equipamiento {
-    margin-top: 20px;
-    background-color: #f7fafc;
-    border-radius: 8px;
-    padding: 12px;
-    ion-label {
-      font-weight: bold;
-      margin-right: 8px;
-    }
-    ion-input {
-      width: 100px;
-      margin-right: 8px;
-    }
-    ion-button.btn-add {
-      --background: #38a169;
-      --background-activated: #2f855a;
-    }
+
+  ion-card-header {
+    --background: transparent;
+    padding-bottom: 0.5rem;
+  }
+
+  ion-card-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: $primary-color;
+    text-align: center;
+  }
+
+  ion-card-content {
+    padding-top: 0.5rem;
   }
 }
 
-// Estilos opcionales para la toolbar
-.custom-toolbar {
-  --background: #2b6cb0;
-  --color: #ffffff;
-  ion-title {
-    font-weight: bold;
+/* Tarjeta de agregar nuevo equipamiento con estilo distintivo */
+.new-equip-card {
+  border: 2px dashed $primary-color;
+}
+
+/* Espaciado para ítems dentro de la tarjeta */
+.item-card {
+  margin-bottom: 0.8rem;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+/* Control de cantidad dentro de la tarjeta */
+.quantity-control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem 0;
+
+  ion-button {
+    --padding-start: 0;
+    --padding-end: 0;
+    --min-width: 2rem;
+    color: $primary-color;
+  }
+
+  .quantity-input {
+    width: 3rem;
+    text-align: center;
+    margin: 0 0.5rem;
+    background: #fff;
+    --padding-top: 0.5rem;
+    --padding-bottom: 0.5rem;
+    --padding-start: 0.5rem;
+    --padding-end: 0.5rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+  }
+}
+
+/* Botones de acción en la parte inferior de la tarjeta */
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+
+  ion-button {
+    --border-radius: 50%;
+    --min-width: 2.5rem;
+    --min-height: 2.5rem;
+    --padding-top: 0.5rem;
+    --padding-bottom: 0.5rem;
+    color: $primary-color;
+    border: 1px solid $primary-color;
+  }
+
+  /* Botón de eliminar en rojo */
+  ion-button[color="danger"] {
+    border-color: $danger-color;
+    color: $danger-color;
   }
 }

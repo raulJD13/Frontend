@@ -1,33 +1,36 @@
 <ion-content>
-  <ion-item>
-    <ion-label position="floating">Nombre</ion-label>
-    <ion-input [(ngModel)]="deporte.nombre"></ion-input>
-  </ion-item>
-  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  <div class="deporte-container">
+    <h1>{{ isEdit ? 'Editar Deporte' : 'Crear Deporte' }}</h1>
 
-  <ion-item>
-    <ion-label>Tipo</ion-label>
-    <ion-select [(ngModel)]="deporte.tipo">
-      <ion-select-option value="tierra">Tierra</ion-select-option>
-      <ion-select-option value="agua">Agua</ion-select-option>
-    </ion-select>
-  </ion-item>
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input [(ngModel)]="deporte.nombre" placeholder="Nombre: Senderismo"></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label>Imagen</ion-label>
-    <input type="file" (change)="onFileSelected($event)" />
-  </ion-item>
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
 
-  <ion-item>
-    <ion-label>Vista Previa</ion-label>
-    <img
-      *ngIf="deporte.imagen"
-      [src]="deporte.imagen"
-      alt="Imagen del deporte"
-    />
-  </ion-item>
+    <ion-item>
+      <ion-label position="floating">Tipo</ion-label>
+      <ion-select [(ngModel)]="deporte.tipo">
+        <ion-select-option value="tierra">Tierra</ion-select-option>
+        <ion-select-option value="agua">Agua</ion-select-option>
+      </ion-select>
+    </ion-item>
 
-  <ion-button expand="full" color="primary" (click)="saveDeporte()">
-    Guardar
-  </ion-button>
+    <div class="file-upload-container">
+      <label class="file-label">
+        <span>Selecciona una imagen</span>
+        <input type="file" (change)="onFileSelected($event)" />
+      </label>
+    </div>
+
+    <div *ngIf="deporte.imagen && deporte.imagen.startsWith('http')" class="preview-wrapper">
+      <ion-label>Vista Previa</ion-label>
+      <img [src]="deporte.imagen" alt="Imagen del deporte" class="preview-image" />
+    </div>
+
+    <ion-button expand="block" class="save-button" (click)="saveDeporte()">
+      {{ isEdit ? 'Actualizar' : 'Guardar' }}
+    </ion-button>
+  </div>
 </ion-content>

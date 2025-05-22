@@ -2,25 +2,38 @@
   <ion-toolbar>
     <ion-title>Deportes</ion-title>
     <ion-buttons slot="end">
-      <ion-button color="success" [routerLink]="['/deporte/new']">Añadir Deporte</ion-button>
+      <ion-button class="sports-add-button" [routerLink]="['/deporte/new']">
+        <ion-icon slot="start" name="add-outline"></ion-icon>
+        Añadir
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
-</ion-header> 
+</ion-header>
 
-<ion-content>
+<ion-content class="sports-container">
   <ion-grid>
     <ion-row>
       <ion-col size="12" size-md="6" size-lg="4" *ngFor="let deporte of deportes; let i = index">
         <div 
-          class="activities-card"
+          class="sports-card"
           [style.backgroundImage]="'url(' + deporte.imagen + '?timestamp=' + i" 
-          [style.animationDelay]="i * 0.2 + 's'">
-          <div class="activities-card-text">
-            <h3>{{ deporte.nombre }}</h3>
-            <p>{{ deporte.tipo }}</p>
-            <ion-button expand="block" color="primary" [routerLink]="['/actividades', deporte.idDeporte]">Ver Actividades</ion-button>
-            <ion-button expand="block" color="primary" [routerLink]="['/deporte', deporte.idDeporte]">Editar</ion-button>
-            <ion-button expand="block" color="danger" (click)="deleteDeporte(deporte.idDeporte)">Eliminar</ion-button>
+          [style.--animation-delay]="i * 0.1 + 's'">
+          <div class="sports-card-content">
+            <div class="sports-card-header">
+              <h3 class="sports-card-title">{{ deporte.nombre }}</h3>
+              <p class="sports-card-subtitle">{{ deporte.tipo }}</p>
+            </div>
+            <div class="sports-card-actions">
+              <ion-button fill="clear" class="sports-action-btn" [routerLink]="['/actividades', deporte.idDeporte]">
+                <ion-icon name="eye-outline"></ion-icon>
+              </ion-button>
+              <ion-button fill="clear" class="sports-action-btn" [routerLink]="['/deporte', deporte.idDeporte]">
+                <ion-icon name="create-outline"></ion-icon>
+              </ion-button>
+              <ion-button fill="clear" class="sports-action-btn danger" (click)="deleteDeporte(deporte.idDeporte)">
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-button>
+            </div>
           </div>
         </div>
       </ion-col>

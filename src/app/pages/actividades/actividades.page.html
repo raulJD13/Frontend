@@ -18,22 +18,26 @@
     <ion-item *ngFor="let actividad of actividades">
       <ion-grid>
         <ion-row class="align-items-center">
-          <!-- Imagen -->
+          <!-- Imagen corregida -->
           <ion-col size="12" size-md="2">
             <ion-thumbnail>
               <img
-                [src]="'assets/images/' + actividad.imagen"
+                [src]="actividad.imagen || 'assets/images/placeholder.jpg'"
                 alt="{{ actividad.nombre }}"
+                (error)="actividad.imagen = 'assets/images/placeholder.jpg'"
               />
             </ion-thumbnail>
           </ion-col>
 
-          <!-- Detalles de la actividad -->
+          <!-- Detalles -->
           <ion-col size="12" size-md="6">
             <ion-label>
               <h2>{{ actividad.nombre }}</h2>
               <p>{{ actividad.descripcion }}</p>
-              <p><strong>Precio:</strong> ${{ actividad.precio }}</p>
+              <p>
+                <strong>Precio:</strong> ${{ actividad.precio | number:'1.2-2'
+                }}
+              </p>
               <p><strong>Valoración:</strong> {{ actividad.valoracion }} / 5</p>
             </ion-label>
           </ion-col>
@@ -45,15 +49,14 @@
               color="secondary"
               [routerLink]="['/comentarios', actividad.idActividad]"
             >
-              <ion-icon name="chatbubbles-outline"></ion-icon> Ver Comentarios
+              <ion-icon name="chatbubbles-outline"></ion-icon> Comentarios
             </ion-button>
             <ion-button
               fill="clear"
               color="tertiary"
               [routerLink]="['/equipamientos', actividad.idActividad]"
             >
-              <ion-icon name="eye-outline"></ion-icon> Ver Equipamiento
-              Necesario
+              <ion-icon name="eye-outline"></ion-icon> Equipamiento
             </ion-button>
             <ion-button
               fill="clear"

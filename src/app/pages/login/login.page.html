@@ -1,21 +1,22 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true" class="login-container">
   <div class="login-box">
-    <ion-item>
-      <ion-label position="floating">Email</ion-label>
-      <ion-input type="email" [(ngModel)]="email"></ion-input>
+    <h1 class="app-title">Bienvenido</h1>
+    
+    <ion-item class="login-input">
+      <ion-icon slot="start" name="mail-outline" class="input-icon"></ion-icon>
+      <ion-label position="floating" class="input-label">Correo electrónico</ion-label>
+      <ion-input type="email" class="input-field" [(ngModel)]="email"></ion-input>
     </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" [(ngModel)]="password"></ion-input>
+    <ion-item class="login-input">
+      <ion-icon slot="start" name="lock-closed-outline" class="input-icon"></ion-icon>
+      <ion-label position="floating" class="input-label">Contraseña</ion-label>
+      <ion-input type="password" class="input-field" [(ngModel)]="password"></ion-input>
     </ion-item>
 
-    <ion-button expand="full" (click)="continuar()">Continuar</ion-button>
+    <ion-button expand="block" (click)="continuar()" class="login-button">
+      Ingresar
+      <ion-icon slot="end" name="arrow-forward-outline" class="button-icon"></ion-icon>
+    </ion-button>
   </div>
 </ion-content>

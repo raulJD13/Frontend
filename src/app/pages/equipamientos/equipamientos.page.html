@@ -1,88 +1,101 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Equipamiento Actividad {{ actividadId }}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/deportes"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Equipamientos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <!-- Lista actual -->
-  <ion-list>
-    <ion-item *ngFor="let item of lista">
-      <ion-grid>
-        <ion-row class="ion-align-items-center">
-          <ion-col size="3">
-            <ion-input
-              [(ngModel)]="item.equipamiento.nombre"
-              placeholder="Nombre"
-            ></ion-input>
-          </ion-col>
-          <ion-col size="2">
-            <ion-input
-              [(ngModel)]="item.equipamiento.tipo"
-              placeholder="Tipo"
-            ></ion-input>
-          </ion-col>
-          <ion-col size="3">
-            <ion-input
-              [(ngModel)]="item.equipamiento.descripcion"
-              placeholder="Descripción"
-            ></ion-input>
-          </ion-col>
-          <ion-col size="2">
-            <ion-input
-              type="number"
-              [(ngModel)]="item.cantidad"
-              placeholder="Cantidad"
-            ></ion-input>
-          </ion-col>
-          <ion-col size="2" class="ion-text-right">
-            <ion-button (click)="editarEquip(item)">
-              <ion-icon slot="icon-only" name="save-outline"></ion-icon>
-            </ion-button>
-            <ion-button color="danger" (click)="eliminar(item)">
-              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
-  </ion-list>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-sm="6" size-md="4" *ngFor="let equip of actividadEquipamientos">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Editar Equipamiento</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item>
+              <ion-label position="stacked">Nombre</ion-label>
+              <ion-input [(ngModel)]="equip.equipamiento.nombre"></ion-input>
+            </ion-item>
 
-  <!-- Formulario de nuevo equipamiento -->
-  <ion-item>
-    <ion-grid>
-      <ion-row>
-        <ion-col size="3">
-          <ion-input
-            [(ngModel)]="nuevoNombre"
-            placeholder="Nombre"
-          ></ion-input>
-        </ion-col>
-        <ion-col size="2">
-          <ion-input
-            [(ngModel)]="nuevoTipo"
-            placeholder="Tipo"
-          ></ion-input>
-        </ion-col>
-        <ion-col size="3">
-          <ion-input
-            [(ngModel)]="nuevaDesc"
-            placeholder="Descripción"
-          ></ion-input>
-        </ion-col>
-        <ion-col size="2">
-          <ion-input
-            type="number"
-            [(ngModel)]="nuevaCant"
-            placeholder="Cant."
-          ></ion-input>
-        </ion-col>
-        <ion-col size="2" class="ion-text-right">
-          <ion-button (click)="agregar()">
-            <ion-icon slot="icon-only" name="add-outline"></ion-icon>
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Tipo</ion-label>
+              <ion-input [(ngModel)]="equip.equipamiento.tipo"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Descripción</ion-label>
+              <ion-input [(ngModel)]="equip.equipamiento.descripcion"></ion-input>
+            </ion-item>
+
+            <!-- <ion-item>
+              <ion-label position="stacked">Cantidad</ion-label>
+              <ion-button (click)="decrementarCantidad(equip)" fill="clear">
+                <ion-icon name="remove-circle-outline"></ion-icon>
+              </ion-button>
+              <ion-input type="number" [(ngModel)]="equip.cantidad"></ion-input>
+              <ion-button (click)="incrementarCantidad(equip)" fill="clear">
+                <ion-icon name="add-circle-outline"></ion-icon>
+              </ion-button>
+            </ion-item> -->
+
+            <ion-item lines="none">
+              <ion-button color="primary" fill="solid" (click)="guardarCambios(equip)">
+                <ion-icon slot="start" name="save-outline"></ion-icon>
+                Guardar
+              </ion-button>
+              <ion-button color="danger" fill="outline" (click)="eliminarVinculo(equip)">
+                <ion-icon slot="start" name="trash-outline"></ion-icon>
+                Eliminar
+              </ion-button>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Agregar Nuevo Equipamiento</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item>
+              <ion-label position="stacked">Nombre</ion-label>
+              <ion-input [(ngModel)]="nuevoEquipamiento.nombre"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Tipo</ion-label>
+              <ion-input [(ngModel)]="nuevoEquipamiento.tipo"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Descripción</ion-label>
+              <ion-input [(ngModel)]="nuevoEquipamiento.descripcion"></ion-input>
+            </ion-item>
+
+            <!-- <ion-item>
+              <ion-label position="stacked">Cantidad</ion-label>
+              <ion-button (click)="nuevoEquipamiento.cantidad = (nuevoEquipamiento.cantidad || 0) - 1" fill="clear">
+                <ion-icon name="remove-circle-outline"></ion-icon>
+              </ion-button>
+              <ion-input type="number" [(ngModel)]="nuevoEquipamiento.cantidad"></ion-input>
+              <ion-button (click)="nuevoEquipamiento.cantidad = (nuevoEquipamiento.cantidad || 0) + 1" fill="clear">
+                <ion-icon name="add-circle-outline"></ion-icon>
+              </ion-button>
+            </ion-item> -->
+
+            <ion-button expand="block" (click)="agregarEquipamiento()">
+              Agregar Equipamiento
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

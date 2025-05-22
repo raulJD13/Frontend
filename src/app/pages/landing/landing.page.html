@@ -1,9 +1,32 @@
 <ion-content [fullscreen]="true">
-  <div class="container">
-    <img src="assets/images/inicialLogo.svg" alt="Logo" class="logo">
-    <div class="buttons">
-      <ion-button expand="full" routerLink="/login">Login</ion-button>
-      <ion-button expand="full" routerLink="/register" color="secondary">Register</ion-button>
+
+  <!-- Spinner de carga -->
+  <div *ngIf="isLoading" class="overlay-spinner">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <!-- Contenedor principal centrado -->
+  <div class="landing-wrap">
+
+    <!-- Fondo (blur dinámico) -->
+    <div class="background" [class.blurred]="isLoading"></div>
+
+    <!-- Contenido centrado: logo + botones -->
+    <div class="content">
+      <img
+        src="assets/images/inicialLogo.svg"
+        alt="Logo"
+        class="logo"
+        [class.entered]="!isLoading"
+      />
+
+      <div class="buttons" *ngIf="!isLoading">
+        <ion-button expand="full" routerLink="/login">Login</ion-button>
+        <ion-button expand="full" routerLink="/register" color="secondary">
+          Register
+        </ion-button>
+      </div>
     </div>
+
   </div>
 </ion-content>

@@ -1,55 +1,183 @@
-/* Animación de entrada */
-@keyframes fadeInUp {
+/* Variables locales encapsuladas */
+.sports-container {
+  --background: #F0F8FF;; 
+  --sports-card-bg: rgba(255, 255, 255, 0.95);
+  --sports-text-color: #2d3436;
+  --sports-accent-color: #0984e3;
+  --sports-danger-color: #d63031;
+  --sports-card-radius: 16px;
+  --sports-card-padding: 1.5rem;
+  --sports-card-spacing: 0.5rem;
+  --sports-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --sports-hover-scale: 1.02;
+  --sports-transition-duration: 0.4s;
+}
+
+/* Animación principal */
+@keyframes cardEntrance {
   0% {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px) rotateX(15deg) scale(0.95);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) rotateX(0) scale(1);
   }
 }
 
-.activities-card {
+/* Animación de shake para eliminar */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(3px); }
+  50% { transform: translateX(-3px); }
+  75% { transform: translateX(2px); }
+}
+
+.sports-card {
   position: relative;
-  width: 100%;
-  height: 200px; /* Altura fija para las tarjetas */
+  height: 320px;
+  border-radius: var(--sports-card-radius);
+  margin: 1rem;
+  overflow: hidden;
   background-size: cover;
   background-position: center;
-  border-radius: 15px;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
   opacity: 0;
-  animation: fadeInUp 0.6s ease-out forwards;
+  animation: cardEntrance 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: var(--animation-delay);
+  transition: all var(--sports-transition-duration) cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-origin: center bottom;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.7) 100%);
+    transition: opacity var(--sports-transition-duration) ease;
+    opacity: 0.8;
+  }
+
+  &:hover {
+    transform: translateY(-8px) scale(var(--sports-hover-scale));
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    
+    &::before {
+      opacity: 0.9;
+    }
+    
+    .sports-card-content {
+      backdrop-filter: blur(12px);
+      background: rgba(0, 0, 0, 0.5);
+    }
+    
+    .sports-card-title {
+      transform: translateY(-5px);
+    }
+    
+    .sports-card-subtitle {
+      transform: translateY(-3px);
+      opacity: 1;
+    }
+    
+    .sports-card-actions {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
-.activities-card-text {
-  background-color: rgba(0, 0, 0, 0.6);
+.sports-card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--sports-card-padding);
   color: white;
-  padding: 10px 20px;
-  border-radius: 10px;
-  font-size: 1.2em;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-  font-weight: bold;
-  text-align: center;
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.4);
+  transition: all var(--sports-transition-duration) ease;
 }
 
-.activities-card h3 {
+.sports-card-header {
+  margin-bottom: var(--sports-card-spacing);
+  overflow: hidden;
+}
+
+.sports-card-title {
+  font-size: 1.6rem;
   margin: 0;
-  font-size: 1.5em;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  transition: transform var(--sports-transition-duration) ease;
 }
 
-.activities-card p {
-  font-size: 1em;
-  margin-bottom: 10px;
+.sports-card-subtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin: 0.5rem 0;
+  transition: all calc(var(--sports-transition-duration) * 1.2) ease;
 }
 
-.activities-card:hover {
-  transform: scale(1.05);
+.sports-card-actions {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: flex-end;
+  opacity: 0.9;
+  transform: translateY(10px);
+  transition: all calc(var(--sports-transition-duration) * 1.5) cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.sports-action-btn {
+  --padding-start: 0.6rem;
+  --padding-end: 0.6rem;
+  --ripple-color: transparent;
   transition: transform 0.3s ease;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  
+  ion-icon {
+    font-size: 1.6rem;
+    color: white;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
+
+  &:hover ion-icon {
+    transform: scale(1.2) translateX(2px);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  }
+
+  &.danger {
+    ion-icon {
+      color: var(--sports-danger-color);
+    }
+    
+    &:hover ion-icon {
+      animation: shake 0.4s ease;
+      color: #ff4757;
+    }
+  }
+}
+
+.sports-add-button {
+  --background: var(--sports-accent-color);
+  --color:white;
+  --border-radius: 10px;
+  --padding-start: 1.2rem;
+  --padding-end: 1.2rem;
+  --box-shadow: 0 4px 16px rgba(9, 132, 227, 0.3);
+  transition: all var(--sports-transition-duration) cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  ion-icon {
+    margin-right: 0.6rem;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    --box-shadow: 0 6px 24px rgba(9, 132, 227, 0.4);
+    transform: translateY(-2px) scale(1.05);
+    
+    ion-icon {
+      transform: rotate(90deg) scale(1.1);
+    }
+  }
 }

@@ -1,18 +1,130 @@
 .register-container {
-  --background: #f0f8ff; /* Fondo azul claro */
+  /* Variables de color */
+  --register-primary: #FF6B6B;
+  --register-primary-hover: #FF5252;
+  --register-accent: #4DABF7;
+  --register-bg-start: #f8f9fa;
+  --register-bg-end: #e9ecef;
+  --register-form-bg: rgba(255, 255, 255, 0.98);
+  --register-input-bg: #f1f3f5;
+  --register-text: #000000;          // Texto negro
+  --register-placeholder: #6c757d;   // Placeholder gris
+
+  background: linear-gradient(160deg, var(--register-bg-start), var(--register-bg-end));
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  padding: 20px;
+  min-height: 100vh;
+  padding: 1rem;
+
+  .register-box {
+    width: min(90%, 500px);
+    background: var(--register-form-bg);
+    padding: clamp(1.5rem, 5vw, 2.5rem);
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(8px);
+
+    @media (max-width: 480px) {
+      border-radius: 1rem;
+      padding: 1.25rem;
+    }
+  }
+
+  .app-title {
+    color: var(--register-primary);
+    text-align: center;
+    font-size: clamp(1.75rem, 6vw, 2rem);
+    margin-bottom: clamp(1.5rem, 4vw, 2rem);
+  }
+
+  .register-input {
+    --background: var(--register-input-bg);
+    --border-radius: 12px;
+    --padding-start: 1rem;
+    margin-bottom: 1rem;
+
+    .input-icon {
+      color: var(--register-text);
+      opacity: 0.7;
+      font-size: 1.2rem;
+    }
+
+    .input-label {
+      color: var(--register-placeholder) !important;
+      transition: color 0.3s ease;
+    }
+
+    .input-field {
+      color: var(--register-text);
+      
+      &::placeholder {
+        color: var(--register-placeholder);
+        opacity: 0.8;
+      }
+    }
+
+    &.ion-focused .input-label,
+    &:has(.input-field:not(:placeholder-shown)) .input-label {
+      color: var(--register-text) !important;
+    }
+
+    &.item-has-focus {
+      box-shadow: 0 0 0 2px var(--register-accent);
+      
+      .input-icon {
+        color: var(--register-primary);
+      }
+    }
+
+    @media (max-width: 480px) {
+      --padding-start: 0.75rem;
+      margin-bottom: 0.8rem;
+
+      .input-icon {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .register-button {
+    --background: var(--register-primary);
+    --background-activated: var(--register-primary-hover);
+    --color: white;
+    --border-radius: 12px;
+    margin-top: 1.5rem;
+    font-size: clamp(0.9rem, 4vw, 1rem);
+    transition: transform 0.2s ease;
+
+    .button-icon {
+      transition: transform 0.3s ease;
+    }
+
+    &:hover:not(.button-disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px -2px rgba(255, 107, 107, 0.3);
+      
+      .button-icon {
+        transform: translateX(3px);
+      }
+    }
+
+    &:active:not(.button-disabled) {
+      transform: translateY(0);
+    }
+
+    @media (max-width: 480px) {
+      margin-top: 1rem;
+    }
+  }
 }
 
-.register-box {
-  width: 90%;
-  max-width: 400px;
-  background: white;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-  text-align: center;
+@keyframes loginEntry {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animated-entry {
+  animation: loginEntry 0.6s ease-out;
 }

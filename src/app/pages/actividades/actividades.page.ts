@@ -4,12 +4,11 @@ import { AlertController } from '@ionic/angular';
 import { ActividadService } from 'src/app/services/actividad.service';
 
 @Component({
-  selector: 'app-actividades', // Selector correcto para actividades
-  templateUrl: './actividades.page.html', // Template correcto
-  styleUrls: ['./actividades.page.scss'], // Estilos correctos
+  selector: 'app-actividades',
+  templateUrl: './actividades.page.html',
+  styleUrls: ['./actividades.page.scss'],
 })
 export class ActividadesPage implements OnInit {
-  // Clase exportada correctamente
   actividades: any[] = [];
   deporteId: number | null = null;
   token: string | null = null;
@@ -75,13 +74,9 @@ export class ActividadesPage implements OnInit {
               (error) => {
                 console.error('Error al eliminar la actividad:', error);
                 if (error.status === 403) {
-                  console.error(
-                    'No tienes permisos para eliminar esta actividad.'
-                  );
+                  console.error('No tienes permisos para eliminar esta actividad.');
                 } else if (error.status === 401) {
-                  console.error(
-                    'Tu sesión ha expirado. Por favor, inicia sesión nuevamente.'
-                  );
+                  console.error('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
                 } else {
                   console.error('Hubo un problema al eliminar la actividad.');
                 }

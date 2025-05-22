@@ -14,13 +14,15 @@ import { AlertController } from '@ionic/angular';
 })
 export class EquipamientosPage implements OnInit {
   actividadId!: number;
-  lista: ActividadEquipamiento[] = [];
+  actividadEquipamientos: ActividadEquipamiento[] = [];
 
   // Campos para el formulario de nuevo equipamiento
-  nuevoNombre = '';
-  nuevoTipo     = '';
-  nuevaDesc     = '';
-  nuevaCant     = 1;
+  nuevoEquipamiento: Equipamiento & { cantidad: number } = {
+    nombre: '',
+    tipo: '',
+    descripcion: '',
+    cantidad: 1
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -36,12 +38,35 @@ export class EquipamientosPage implements OnInit {
   /** Carga la lista actual */
   load() {
     this.svc.getByActividad(this.actividadId).subscribe({
-      next: data => this.lista = data,
+      next: data => this.actividadEquipamientos = data,
       error: err => this.handleError(err)
     });
   }
 
-  /** Actualiza sólo la cantidad */
+  /** Disminuye la cantidad */
+  decrementarCantidad(item: ActividadEquipamiento) {
+    if (item.cantidad > 0) {
+      item.cantidad--;
+    }
+  }
+
+  /** Aumenta la cantidad */
+  incrementarCantidad(item: ActividadEquipamiento) {
+    item.cantidad++;
+  }
+
+  /** Guarda los cambios */
+  guardarCambios(item: ActividadEquipamiento) {
+    this.actualizar(item);
+    this.editarEquip(item);
+  }
+
+  /** Elimina el vínculo actividad–equipamiento */
+  eliminarVinculo(item: ActividadEquipamiento) {
+    this.eliminar(item);
+  }
+
+  /** Actualiza solo la cantidad */
   actualizar(item: ActividadEquipamiento) {
     this.svc.updateCantidad(item.id, item.cantidad).subscribe({
       next: () => this.load(),
@@ -49,7 +74,7 @@ export class EquipamientosPage implements OnInit {
     });
   }
 
-  /** Edita los datos de Equipamiento (nombre/tipo/descripción) */
+  /** Edita nombre/tipo/descripcion del equipamiento */
   editarEquip(item: ActividadEquipamiento) {
     const eq = item.equipamiento;
     this.svc.updateEquip(eq.id!, eq).subscribe({
@@ -58,7 +83,7 @@ export class EquipamientosPage implements OnInit {
     });
   }
 
-  /** Elimina el vínculo actividad–equipamiento */
+  /** Elimina el vínculo */
   eliminar(item: ActividadEquipamiento) {
     this.svc.deleteLink(item.id).subscribe({
       next: () => this.load(),
@@ -66,21 +91,16 @@ export class EquipamientosPage implements OnInit {
     });
   }
 
-  /** Añade un nuevo equipamiento y lo vincula */
-  agregar() {
-    if (!this.nuevoNombre || !this.nuevoTipo) { return; }
+  /** Añade nuevo equipamiento y lo vincula */
+  agregarEquipamiento() {
+    const { nombre, tipo, descripcion, cantidad } = this.nuevoEquipamiento;
+    if (!nombre || !tipo) return;
 
-    const nuevo: Equipamiento = {
-      nombre: this.nuevoNombre,
-      tipo: this.nuevoTipo,
-      descripcion: this.nuevaDesc
-    };
+    const nuevo: Equipamiento = { nombre, tipo, descripcion };
 
-    // 1) Crear en la tabla equipamientos
     this.svc.createEquip(nuevo).subscribe({
       next: eq => {
-        // 2) Crear el vínculo en actividad_equipamientos
-        this.svc.link(this.actividadId, eq, this.nuevaCant).subscribe({
+        this.svc.link(this.actividadId, eq, cantidad).subscribe({
           next: () => {
             this.resetForm();
             this.load();
@@ -93,10 +113,12 @@ export class EquipamientosPage implements OnInit {
   }
 
   private resetForm() {
-    this.nuevoNombre = '';
-    this.nuevoTipo   = '';
-    this.nuevaDesc   = '';
-    this.nuevaCant   = 1;
+    this.nuevoEquipamiento = {
+      nombre: '',
+      tipo: '',
+      descripcion: '',
+      cantidad: 1
+    };
   }
 
   private handleError(err: any) {

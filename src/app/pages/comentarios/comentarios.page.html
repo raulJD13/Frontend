@@ -4,63 +4,37 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Comentarios</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-list *ngIf="comentarios.length > 0; else noData">
-    <ion-item *ngFor="let comentario of comentarios">
-      <div
-        *ngIf="!editandoComentario || editandoComentario.idComentario !== comentario.idComentario"
-      >
-        <ion-label>
-          <h2>{{ comentario.usuario?.email || 'Anónimo' }}</h2>
-          <p>{{ comentario.texto }}</p>
-          <small>{{ comentario.fecha | date: 'short' }}</small>
-        </ion-label>
-        <ion-buttons slot="end">
-          <ion-button (click)="editarComentario(comentario)" color="warning">
-            <ion-icon name="create-outline"></ion-icon>
-          </ion-button>
-          <ion-button
-            (click)="eliminarComentario(comentario.idComentario)"
-            color="danger"
-          >
-            <ion-icon name="trash-outline"></ion-icon>
-          </ion-button>
-        </ion-buttons>
+<ion-content [fullscreen]="true" class="comentarios-content">
+  <section *ngIf="comentarios.length > 0; else noData">
+    <div *ngFor="let comentario of comentarios" class="comentario-card">
+      <div class="comentario-contenido" *ngIf="!editandoComentario || editandoComentario.idComentario !== comentario.idComentario">
+        <div class="comentario-header">
+          <span class="comentario-email">{{ comentario.usuario?.email || 'Usuario' }}</span>
+          <span class="comentario-fecha">{{ comentario.fecha | date: 'short' }}</span>
+        </div>
+        <p class="comentario-texto">{{ comentario.texto }}</p>
+        <div class="comentario-actions" *ngIf="idUsuario === comentario.usuario?.idUsuario">
+          <ion-icon name="create-outline" (click)="editarComentario(comentario)"></ion-icon>
+          <ion-icon name="trash-outline" color="danger" (click)="eliminarComentario(comentario.idComentario)"></ion-icon>
+        </div>
       </div>
 
-      <div
-        *ngIf="editandoComentario && editandoComentario.idComentario === comentario.idComentario"
-      >
-        <ion-input [(ngModel)]="editandoComentario.texto"></ion-input>
-        <ion-button (click)="guardarEdicion()" color="success"
-          >Guardar</ion-button
-        >
-        <ion-button (click)="cancelarEdicion()" color="medium"
-          >Cancelar</ion-button
-        >
+      <div *ngIf="editandoComentario?.idComentario === comentario.idComentario" class="comentario-edicion">
+        <ion-input [(ngModel)]="editandoComentario.texto" placeholder="Editar comentario"></ion-input>
+        <div class="edicion-actions">
+          <ion-button size="small" fill="clear" color="success" (click)="guardarEdicion()">Guardar</ion-button>
+          <ion-button size="small" fill="clear" color="medium" (click)="cancelarEdicion()">Cancelar</ion-button>
+        </div>
       </div>
-    </ion-item>
-  </ion-list>
+    </div>
+  </section>
 
   <ng-template #noData>
-    <ion-item>
-      <ion-label>No hay comentarios disponibles.</ion-label>
-    </ion-item>
+    <div class="no-comentarios">Aún no hay comentarios. Sé el primero en opinar.</div>
   </ng-template>
 
-  <ion-item>
-    <ion-input
-      [(ngModel)]="nuevoComentario"
-      placeholder="Escribe un comentario..."
-    ></ion-input>
-    <ion-button (click)="agregarComentario()" color="primary"
-      >Enviar</ion-button
-    >
-  </ion-item>
+  <div class="nuevo-comentario">
+    <ion-input [(ngModel)]="nuevoComentario" placeholder="Escribe tu opinión..." class="comentario-input"></ion-input>
+    <ion-button size="small" (click)="agregarComentario()" class="comentario-boton">Enviar</ion-button>
+  </div>
 </ion-content>

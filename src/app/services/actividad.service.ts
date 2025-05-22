@@ -25,6 +25,22 @@ export class ActividadService {
     });
   }
 
+  // Método nuevo para subir imágenes
+  uploadImage(file: File): Observable<{ fileUrl: string }> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.loginService.getToken()}`,
+    });
+
+    return this.http.post<{ fileUrl: string }>(
+      'http://localhost:8083/api/files/upload',
+      formData,
+      { headers }
+    );
+  }
+
   getActividadesByDeporte(idDeporte: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/deporte/${idDeporte}`, {
       headers: this.getHeaders(),
@@ -32,16 +48,14 @@ export class ActividadService {
   }
 
   createActividad(actividad: any, deporteId: number): Observable<any> {
-    actividad.deporte = { idDeporte: deporteId };
-
-    return this.http.post<any>(this.apiUrl, actividad, {
-      headers: this.getHeaders(),
-    });
+    return this.http.post<any>(
+      `${this.apiUrl}?deporteId=${deporteId}`,
+      actividad,
+      { headers: this.getHeaders() }
+    );
   }
 
   updateActividad(id: number, actividad: any): Observable<any> {
-    actividad.deporte = { idDeporte: actividad.id_deporte };
-
     return this.http.put<any>(`${this.apiUrl}/${id}`, actividad, {
       headers: this.getHeaders(),
     });

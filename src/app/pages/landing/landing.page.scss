@@ -1,29 +1,70 @@
-.container {
+/* overlay spinner */
+.overlay-spinner {
+  position: absolute;
+  inset: 0;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: url('/assets/images/daniel-roe-lpjb_UMOyx8-unsplash.jpg') no-repeat center center/cover;
+  background: rgba(0,0,0,0.25);
+  z-index: 10;
 }
 
+/* contenedor principal full‑screen */
+.landing-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 
+/* fondo */
+.background {
+  position: absolute;
+  inset: 0;
+  background: url("/assets/images/daniel-roe-lpjb_UMOyx8-unsplash.jpg")
+              no-repeat center center/cover;
+  transition: filter 0.3s ease-out;
+  z-index: 1;
+}
+.background.blurred {
+  filter: blur(4px);
+}
+
+/* contenido con logo y botones */
+.content {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* logo más grande */
 .logo {
-  width: 50%;
-  max-width: 300px;
-  margin-bottom: 30px;
+  width: 55%;         /* ahora ocupa 70% del ancho */
+  max-width: 400px;   /* hasta 400px */
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  margin-top: 30vh;   /* empuja el logo hacia abajo un 15% de la altura */
+}
+.logo.entered {
+  opacity: 1;
+  transform: scale(1);
 }
 
+/* botones más abajo */
 .buttons {
   position: absolute;
-  bottom: 30px;
+  bottom: 40px;       /* los sitúa a 40px del borde inferior */
   width: 80%;
   max-width: 400px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
-
 ion-button {
   font-size: 1.2rem;
 }
